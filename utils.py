@@ -108,7 +108,24 @@ class CodeChunker:
         Add description for code chunks
         """
 
-        
+
+def call_llm(prompt: str = "", user_input: str = "") -> dict:
+    """
+    """
+    token = "b37080c0a4f747d9978f8bd1c4f6ecce"
+    url = "https://genos.genon.ai:3443/api/gateway/rep/serving/43"
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+    data = {
+        "model": "google/gemini-2.5-pro-preview",
+        "messages": [
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": user_input}
+        ]
+    }
+    response = requests.post(url=f"{url}/v1/chat/completions", headers=headers, json=data)
+    return response.json()["choices"][0]["message"]
 
 
 def detect_encoding(file_path: str) -> str:
